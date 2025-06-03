@@ -13,103 +13,106 @@ import { regresarMailOptions } from './emailOptions/regrsarMailOptions';
 @Injectable()
 export class EmailService {
     constructor(private readonly mailerService: MailerService) { }
-    async asignarEmail(data: any) {
+    async asignarEmail(message: any) {
         try {
-            await this.mailerService.sendMail(asignarMailOptions(data));
-            console.log(`Asignar: ✅ correo enviado a ${data.correoUsuario}`);
+            await this.mailerService.sendMail(asignarMailOptions(message));
+            console.log(`Asignar: ✅ correo enviado a ${message.correoUsuario}`);
         } catch (error) {
             console.error('❌ Error al enviar el correo:', error.message);
             throw error;
         }
     }
 
-    async reasignarEmail(data: any) {
+    async reasignarEmail(message: any) {
         try {
-            await this.mailerService.sendMail(reasignarMailOptions(data));
-            console.log(`Reasignar: ✅ correo enviado a ${data.correoUsuario}`);
+            await this.mailerService.sendMail(reasignarMailOptions(message));
+            console.log(`Reasignar: ✅ correo enviado a ${message.correoUsuario}`);
         } catch (error) {
             console.error('❌ Error al enviar el correo:', error.message);
             throw error;
         }
     }
 
-    async cerrarEmail(data: any) {
+    async cerrarEmail(message: any) {
         try {
-            await this.mailerService.sendMail(cerrarMailOptions(data));
-            console.log(`Cerrar: ✅ correo enviado a ${data.correoUsuario}`);
+            await this.mailerService.sendMail(cerrarMailOptions(message));
+            console.log(`Cerrar: ✅ correo enviado a ${message.correoUsuario}`);
         } catch (error) {
             console.error('❌ Error al enviar el correo:', error.message);
             throw error;
         }
     }
 
-    async contactoEmail(data: any) {
+    async contactoEmail(message: any) {
         try {
 
-            await this.mailerService.sendMail(contactoMailOptions(data));
-            console.log(`Cerrar: ✅ correo enviado a ${data.correoCliente}`);
+            await this.mailerService.sendMail(contactoMailOptions(message));
+            console.log(`Contacto cliente: ✅ correo enviado a ${message.correoCliente}`);
         } catch (error) {
             console.error('❌ Error al enviar el correo:', error.message);
             throw error;
         }
     }
 
-    async crearEmail(data: any) {
+    async crearEmail(message: any) {
         try {
-            await this.mailerService.sendMail(crearticketMailOptions(data));
-            console.log(`Cerrar: ✅ correo enviado a ${data.correoCliente}`);
+            await this.mailerService.sendMail(crearticketMailOptions(message));
+            if (message.Asignado_a !== "") {
+                await this.mailerService.sendMail(asignarMailOptions(message));
+            }
+            console.log(`Creación de ticket: ✅ correo enviado a ${message.correoCliente}`);
         } catch (error) {
             console.error('❌ Error al enviar el correo:', error.message);
             throw error;
         }
     }
 
-    async crearUsuarioEmail(data: any) {
+    async crearUsuarioEmail(message: any) {
         try {
-            await this.mailerService.sendMail(crearUsuarioMailOptions(data));
-            console.log(`✅ Correo enviado para el Usuario#${data.username}.`);
+            await this.mailerService.sendMail(crearUsuarioMailOptions(message));
+            console.log(`Creación de usuario: ✅ Correo enviado para el Usuario#${message.username}.`);
         } catch (error) {
             console.error('❌ Error al enviar el correo:', error.message);
             throw error;
         }
     }
 
-    async notaEmail(data: any) {
+    async notaEmail(message: any) {
         try {
-            await this.mailerService.sendMail(notaMailOptions(data));
-            console.log(`✅ Correo enviado para el nota en el numero de ticket #${data.idTicket}. Respuesta:`);
+            await this.mailerService.sendMail(notaMailOptions(message));
+            console.log(`Nota: ✅ Correo enviado para la nota en ticket #${message.idTicket}.`);
         } catch (error) {
-            console.error(`❌ Error enviando correo con nota para el numero de ticket #${data.idTicket}:`, error.message);
+            console.error(`❌ Error enviando correo con nota para el numero de ticket #${message.idTicket}:`, error.message);
             throw error;
         }
     }
 
-    async reabrirEmail(data: any) {
+    async reabrirEmail(message: any) {
         try {
             const enviarCorreo = async (options: any, descripcion: string) => {
                 try {
                     await this.mailerService.sendMail(options);
-                    console.log(`✅ Correo enviado correctamente: ${descripcion}`);
+                    console.log(`Reabrir: ✅ Correo enviado correctamente`);
                 } catch (error) {
-                    console.error(`❌ Error enviando correo (${descripcion}): ${error.message}`);
-                    throw new Error(`Error al enviar correo: ${descripcion}`);
+                    console.error(`❌ Error enviando correo: ${error.message}`);
+                    throw new Error(`Error al enviar correo`);
                 }
             };
-            await enviarCorreo(reasignarMailOptionsClients(data), `Cliente (ticket #${data.idTicket})`);
-            await enviarCorreo(reasignarMailOptionsUser(data), `Resolutor (ticket #${data.idTicket})`);
+            await enviarCorreo(reasignarMailOptionsClients(message), `Cliente (ticket #${message.idTicket})`);
+            await enviarCorreo(reasignarMailOptionsUser(message), `Resolutor (ticket #${message.idTicket})`);
 
         } catch (error) {
-            console.error(`❌ Error enviando correo con nota para el numero de ticket #${data.idTicket}:`, error.message);
+            console.error(`❌ Error enviando correo con nota para el numero de ticket #${message.idTicket}:`, error.message);
             throw error;
         }
     }
 
-    async regresarEmail(data: any) {
+    async regresarEmail(message: any) {
         try {
-            await this.mailerService.sendMail(regresarMailOptions(data));
-            console.log(`✅ Correo enviado para el numero de ticket #${data.idTicket}.`);
+            await this.mailerService.sendMail(regresarMailOptions(message));
+            console.log(`Regresar: ✅ Correo enviado para el numero de ticket #${message.idTicket}.`);
         } catch (error) {
-            console.error(`❌ Error enviando correo para el numero de ticket #${data.idTicket}:`, error.message);
+            console.error(`❌ Error enviando correo para el numero de ticket #${message.idTicket}:`, error.message);
             throw error;
         }
     }

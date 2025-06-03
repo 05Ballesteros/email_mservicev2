@@ -34,34 +34,34 @@ export class RedisService implements OnModuleInit {
   }
 
   // Manejar los mensajes de cada canal
-  private async handleMessage(channel: string, data: any) {
+  private async handleMessage(channel: string, message: any) {
     switch (channel) {
       case REDIS_CHANNELS.ASIGNAR:
-        await this.handleAsignar(data);
+        await this.handleAsignar(message);
         break;
       case REDIS_CHANNELS.REASIGNAR:
-        await this.handleReasignar(data);
+        await this.handleReasignar(message);
         break;
       case REDIS_CHANNELS.CERRAR:
-        await this.handleCerrar(data);
+        await this.handleCerrar(message);
         break;
       case REDIS_CHANNELS.CONTACTO:
-        await this.handleContacto(data);
+        await this.handleContacto(message);
         break;
       case REDIS_CHANNELS.CREAR_TICKET:
-        await this.handleCrearTicket(data);
+        await this.handleCrearTicket(message);
         break;
       case REDIS_CHANNELS.CREAR_USUARIO:
-        await this.handleCrearUsuario(data);
+        await this.handleCrearUsuario(message);
         break;
       case REDIS_CHANNELS.NOTA:
-        await this.handleNota(data);
+        await this.handleNota(message);
         break;
       case REDIS_CHANNELS.REABRIR:
-        await this.handleReabrir(data);
+        await this.handleReabrir(message);
         break;
       case REDIS_CHANNELS.REGRESAR:
-        await this.handleRegresar(data);
+        await this.handleRegresar(message);
         break;
       default:
         console.warn(`No existe el canal: ${channel}`);
@@ -69,18 +69,19 @@ export class RedisService implements OnModuleInit {
     }
   }
 
-  private async handleCrearTicket(data: any) { await this.emailService.crearEmail(data); }
-  private async handleAsignar(data: any) { await this.emailService.asignarEmail(data); }
-  private async handleReasignar(data: any) { await this.emailService.reasignarEmail(data); }
-  private async handleCerrar(data: any) { await this.emailService.cerrarEmail(data); }
-  private async handleContacto(data: any) { await this.emailService.contactoEmail(data); }
-  private async handleCrearUsuario(data: any) { await this.emailService.crearUsuarioEmail(data); }
-  private async handleNota(data: any) { await this.emailService.notaEmail(data); }
-  private async handleReabrir(data: any) { await this.emailService.reabrirEmail(data); }
-  private async handleRegresar(data: any) { await this.emailService.regresarEmail(data); }
+  private async handleCrearTicket(message: any) { await this.emailService.crearEmail(message); }
+  private async handleAsignar(message: any) { await this.emailService.asignarEmail(message); }
+  private async handleReasignar(message: any) { await this.emailService.reasignarEmail(message); }
+  private async handleCerrar(message: any) { await this.emailService.cerrarEmail(message); }
+  private async handleContacto(message: any) { await this.emailService.contactoEmail(message); }
+  private async handleCrearUsuario(message: any) { await this.emailService.crearUsuarioEmail(message); }
+  private async handleNota(message: any) { await this.emailService.notaEmail(message); }
+  private async handleReabrir(message: any) { await this.emailService.reabrirEmail(message); }
+  private async handleRegresar(message: any) { await this.emailService.regresarEmail(message); }
 
   // Publicar mensajes en un canal
   publish(channel: string, message: any) {
+    console.log("message?", message);
     this.redisClient.publish(channel, JSON.stringify(message));
   }
 }

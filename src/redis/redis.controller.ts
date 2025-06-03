@@ -15,6 +15,7 @@ export class RedisController {
         @Body() publishDto: PublishDto,
     ) {
         const { channel, message } = publishDto;
+        console.log("Esto message llega", message);
 
         // Validar si el canal existe
         if (!Object.values(REDIS_CHANNELS).includes(channel)) {

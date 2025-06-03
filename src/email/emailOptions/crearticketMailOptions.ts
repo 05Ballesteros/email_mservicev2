@@ -1,4 +1,5 @@
 export const crearticketMailOptions = (data: any) => {
+  console.log("data", data);
   return {
     from: `CENTRO DE SERVICIO <carlos.ballesteros@ipejal.gob.mx>`,
     to: data.correoCliente,
