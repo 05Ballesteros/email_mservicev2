@@ -57,10 +57,12 @@ export class EmailService {
     async crearEmail(message: any) {
         try {
             await this.mailerService.sendMail(crearticketMailOptions(message));
+            console.log(`Creación de ticket: ✅ correo enviado a ${message.correoCliente}`);
             if (message.Asignado_a !== "") {
                 await this.mailerService.sendMail(asignarMailOptions(message));
+                console.log(`Asignación de ticket: ✅ correo enviado a ${message.correoUsuario}`);
             }
-            console.log(`Creación de ticket: ✅ correo enviado a ${message.correoCliente}`);
+            return true;
         } catch (error) {
             console.error('❌ Error al enviar el correo:', error.message);
             throw error;

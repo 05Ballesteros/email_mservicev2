@@ -9,8 +9,13 @@ export class RedisService implements OnModuleInit {
   private subscriber: Redis;
 
   constructor(private readonly emailService: EmailService) { // Inyección de dependencia
-    this.redisClient = new Redis(); // Configura con tus credenciales si es necesario
-    this.subscriber = new Redis();
+    const redisOptions = {
+      host: 'redis', // El nombre del servicio en Docker Compose
+      port: 6379,    // Puerto expuesto por el contenedor
+    };
+
+    this.redisClient = new Redis(redisOptions);
+    this.subscriber = new Redis(redisOptions);
   }
 
   async onModuleInit() {
