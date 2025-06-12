@@ -1,9 +1,11 @@
-export const contactoMailOptions = (data: any) => {
+export const pendienteMailOptions = (data: any) => {
+  console.log("este es el data dentro del correo", data)
   return {
     from: `CENTRO DE SERVICIO <carlos.ballesteros@ipejal.gob.mx>`,
     to: data.destinatario,
     cc: data.emails_extra,
-    subject: `Seguimiento al número de ticket #${data.idTicket}.`,
+    subject: `PENDIENTE - El ticket #${data.idTicket} fue marcado como pendiente.`,
+    attachments: data.attachments,
     html: `
           
           <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
