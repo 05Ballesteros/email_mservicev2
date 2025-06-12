@@ -8,4 +8,5 @@ export const REDIS_CHANNELS = {
   NOTA: 'channel_notas',
   REABRIR: 'channel_reabrirTicket',
   REGRESAR: 'channel_regresarTicket',
+  REGRESAR_RESOLUTOR: 'channel_regresarTicketResolutor',
 };

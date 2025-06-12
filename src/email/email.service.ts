@@ -10,6 +10,7 @@ import { crearUsuarioMailOptions } from './emailOptions/crearUsuarioMailOptions'
 import { notaMailOptions } from './emailOptions/notaMailOptions';
 import { reasignarMailOptionsClients, reasignarMailOptionsUser } from './emailOptions/reabrirMailOptions';
 import { regresarMailOptions } from './emailOptions/regrsarMailOptions';
+import { regresarResolutorMailOptions } from './emailOptions/regrsarResolutorMailOptions';
 @Injectable()
 export class EmailService {
     constructor(private readonly mailerService: MailerService) { }
@@ -84,7 +85,7 @@ export class EmailService {
             await this.mailerService.sendMail(notaMailOptions(message));
             console.log(`Nota: ✅ Correo enviado para la nota en ticket #${message.idTicket}.`);
         } catch (error) {
-            console.error(`❌ Error enviando correo con nota para el numero de ticket #${message.idTicket}:`, error.message);
+            console.error(`❌ Error enviando correo con nota para el número de ticket #${message.idTicket}:`, error.message);
             throw error;
         }
     }
@@ -104,7 +105,7 @@ export class EmailService {
             await enviarCorreo(reasignarMailOptionsUser(message), `Resolutor (ticket #${message.idTicket})`);
 
         } catch (error) {
-            console.error(`❌ Error enviando correo con nota para el numero de ticket #${message.idTicket}:`, error.message);
+            console.error(`❌ Error enviando correo con nota para el número de ticket #${message.idTicket}:`, error.message);
             throw error;
         }
     }
@@ -112,9 +113,19 @@ export class EmailService {
     async regresarEmail(message: any) {
         try {
             await this.mailerService.sendMail(regresarMailOptions(message));
-            console.log(`Regresar: ✅ Correo enviado para el numero de ticket #${message.idTicket}.`);
+            console.log(`Regresar: ✅ Correo enviado para el número de ticket #${message.idTicket}.`);
         } catch (error) {
-            console.error(`❌ Error enviando correo para el numero de ticket #${message.idTicket}:`, error.message);
+            console.error(`❌ Error enviando correo para el número de ticket #${message.idTicket}:`, error.message);
+            throw error;
+        }
+    }
+
+    async regresarEmailResolutor(message: any) {
+        try {
+            await this.mailerService.sendMail(regresarResolutorMailOptions(message));
+            console.log(`Regresar ticket a resolutor: ✅ Correo enviado para el número de ticket #${message.idTicket}.`);
+        } catch (error) {
+            console.error(`❌ Error enviando correo para el número de ticket #${message.idTicket}:`, error.message);
             throw error;
         }
     }
