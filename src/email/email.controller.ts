@@ -1,16 +1,29 @@
-import { Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { EmailService } from './email.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-
-@Controller('')
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import { PendienteDto } from './dto/pendiente.dto';
+import { memoryStorage } from 'multer';
+@Controller('email')
 @UseGuards(JwtAuthGuard)
 export class EmailController {
     constructor(private readonly emailService: EmailService) { }
 
-    // @Post(/contactoCliente/:id)
-    // contactoCliente(@Body() contactoClienteDto: ContactoClienteDto) {
-    //     return this.emailService.contactoCliente(contactoClienteDto);
-    // }
+    @Post("/pendiente/:id")
+    @UseInterceptors(AnyFilesInterceptor({
+        storage: memoryStorage(),
+    }))
+    async marcarPendiente(@Body() dto: PendienteDto, @UploadedFiles() files: Express.Multer.File[]) {
+        return this.emailService.marcarPendiente(dto, files);
+    }
+
+    @Post("/contactoCliente/:id")
+    @UseInterceptors(AnyFilesInterceptor({
+        storage: memoryStorage(),
+    }))
+    async contactoCliente(@Body() dto: PendienteDto, @UploadedFiles() files: Express.Multer.File[]) {
+        return this.emailService.contactoCliente(dto, files);
+    }
 
     // @Get()
     // @Roles('Root', 'Administrador')

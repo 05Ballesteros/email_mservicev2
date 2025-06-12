@@ -10,6 +10,17 @@ import { crearUsuarioMailOptions } from './emailOptions/crearUsuarioMailOptions'
 import { notaMailOptions } from './emailOptions/notaMailOptions';
 import { reasignarMailOptionsClients, reasignarMailOptionsUser } from './emailOptions/reabrirMailOptions';
 import { regresarMailOptions } from './emailOptions/regrsarMailOptions';
+import { PendienteDto } from './dto/pendiente.dto';
+import { pendienteMailOptions } from './emailOptions/pendienteMailOptions';
+import { Attachment } from 'nodemailer/lib/mailer';
+interface EmailData {
+    details: string;
+    idTicket: string;
+    destinatario: string;
+    emails_extra: string[];
+    attachments: Attachment[];
+}
+
 import { regresarResolutorMailOptions } from './emailOptions/regrsarResolutorMailOptions';
 @Injectable()
 export class EmailService {
@@ -127,6 +138,90 @@ export class EmailService {
         } catch (error) {
             console.error(`❌ Error enviando correo para el número de ticket #${message.idTicket}:`, error.message);
             throw error;
+        }
+    }
+
+    async marcarPendiente(dto: any, files: Express.Multer.File[]) {
+        try {
+            const parsed = JSON.parse(dto.correoData);
+
+            const data: EmailData = {
+                details: parsed.details,
+                idTicket: parsed.idTicket,
+                destinatario: parsed.destinatario,
+                emails_extra: [],
+                attachments: []
+            };
+
+            if (parsed.emails_extra && Array.isArray(parsed.emails_extra)) {
+                data.emails_extra = parsed.emails_extra;
+            }
+
+            if (files.length > 0) {
+                const attachments = files.map(file => ({
+                    filename: file.originalname,
+                    content: file.buffer,
+                    contentType: file.mimetype,
+                    encoding: 'base64',
+                }));
+                data.attachments = attachments
+            }
+
+            await this.mailerService.sendMail(pendienteMailOptions(data));
+
+            return {
+                success: true,
+                message: "Correo enviado correctamente",
+            };
+        } catch (error) {
+            console.error("Error al enviar correo:", error);
+            return {
+                success: false,
+                message: "Error al enviar el correo",
+                error: error.message || error,
+            };
+        }
+    }
+
+    async contactoCliente(dto: any, files: Express.Multer.File[]) {
+        try {
+            const parsed = JSON.parse(dto.correoData);
+
+            const data: EmailData = {
+                details: parsed.details,
+                idTicket: parsed.idTicket,
+                destinatario: parsed.destinatario,
+                emails_extra: [],
+                attachments: []
+            };
+
+            if (parsed.emails_extra && Array.isArray(parsed.emails_extra)) {
+                data.emails_extra = parsed.emails_extra;
+            }
+
+            if (files.length > 0) {
+                const attachments = files.map(file => ({
+                    filename: file.originalname,
+                    content: file.buffer,
+                    contentType: file.mimetype,
+                    encoding: 'base64',
+                }));
+                data.attachments = attachments
+            }
+
+            await this.mailerService.sendMail(pendienteMailOptions(data));
+
+            return {
+                success: true,
+                message: "Correo enviado correctamente",
+            };
+        } catch (error) {
+            console.error("Error al enviar correo:", error);
+            return {
+                success: false,
+                message: "Error al enviar el correo",
+                error: error.message || error,
+            };
         }
     }
 }
