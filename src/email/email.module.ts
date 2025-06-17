@@ -12,7 +12,7 @@ import { EmailController } from './email.controller';
         secure: false,             // false para STARTTLS
         auth: {
           user: 'carlos.ballesteros@ipejal.gob.mx', // Tu correo de Outlook
-          pass: 'Moazeth8',         // Contraseña de tu cuenta o contraseña de aplicación
+          pass: 'Yeanbases1807',         // Contraseña de tu cuenta o contraseña de aplicación
         },
       },
     }),
