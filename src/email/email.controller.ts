@@ -4,6 +4,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { PendienteDto } from './dto/pendiente.dto';
 import { memoryStorage } from 'multer';
+import { CerrarDto } from './dto/cerrar.dto';
 @Controller('email')
 @UseGuards(JwtAuthGuard)
 export class EmailController {
@@ -23,6 +24,14 @@ export class EmailController {
     }))
     async contactoCliente(@Body() dto: PendienteDto, @UploadedFiles() files: Express.Multer.File[]) {
         return this.emailService.contactoCliente(dto, files);
+    }
+
+    @Post("/cerrar/:id")
+    @UseInterceptors(AnyFilesInterceptor({
+        storage: memoryStorage(),
+    }))
+    async cerrarTicket(@Body() dto: CerrarDto, @UploadedFiles() files: Express.Multer.File[]) {
+        return this.emailService.cerrarTicket(dto, files);
     }
 
     // @Get()

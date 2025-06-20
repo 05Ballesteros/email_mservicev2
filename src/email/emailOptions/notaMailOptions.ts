@@ -1,7 +1,18 @@
 export const notaMailOptions = (data: any) => {
+  const destinatarios = [
+    data.Destinatario1,
+    data.Destinatario2,
+    data.Destinatario3,
+  ]
+    .filter((destinatario) => destinatario && destinatario.trim() !== "") // Filtrar valores no vacíos
+    .join(","); // Unir en una cadena separada por comas
+
+  if (!destinatarios) {
+    throw new Error("No hay destinatarios válidos para enviar el correo.");
+  }
   return {
     from: `CENTRO DE SERVICIO <carlos.ballesteros@ipejal.gob.mx>`,
-    to: data.correoResolutor,
+    to: destinatarios,
     subject: `NOTA - Tienes una nota en el número de ticket #${data.idTicket}`,
     html: `
           <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -613,7 +624,7 @@ export const notaMailOptions = (data: any) => {
                                         text-align: justify;
                                       "
                                     >
-                                    Estimad@ ${data.nombreUsuario}, tienes una nota importante en el sistema <b>Chermina</b>.
+                                    Estimad@ usuario, tienes una nota importante en el sistema <b>Chermina</b>.
                                     </p>
                                     
                                     <p
@@ -646,7 +657,7 @@ export const notaMailOptions = (data: any) => {
                                       "
                                     >
                                       <strong>Nota:</strong>
-                                      ${data.nota}
+                                      ${data.Nota}
                                     </p>
                                     <br />
                                     <p

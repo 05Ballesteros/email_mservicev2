@@ -17,8 +17,8 @@ interface EmailData {
     details: string;
     idTicket: string;
     destinatario: string;
-    emails_extra: string[];
-    attachments: Attachment[];
+    emails_extra?: string[];
+    attachments?: Attachment[];
 }
 
 import { regresarResolutorMailOptions } from './emailOptions/regrsarResolutorMailOptions';
@@ -217,6 +217,46 @@ export class EmailService {
             };
         } catch (error) {
             console.error("Error al enviar correo:", error);
+            return {
+                success: false,
+                message: "Error al enviar el correo",
+                error: error.message || error,
+            };
+        }
+    }
+
+    async cerrarTicket(dto: any, files: Express.Multer.File[]) {
+        const parsed = JSON.parse(dto.correoData);
+
+        const data: EmailData = {
+            details: parsed.details,
+            idTicket: parsed.idTicket,
+            destinatario: parsed.destinatario,
+        };
+        try {
+
+            if (parsed.emails_extra && Array.isArray(parsed.emails_extra)) {
+                data.emails_extra = parsed.emails_extra;
+            }
+
+            if (files.length > 0) {
+                const attachments = files.map(file => ({
+                    filename: file.originalname,
+                    content: file.buffer,
+                    contentType: file.mimetype,
+                    encoding: 'base64',
+                }));
+                data.attachments = attachments
+            }
+            await this.mailerService.sendMail(cerrarMailOptions(data));
+
+            console.log(`Cerrar: ✅ Correo enviado para el número de ticket #${data.idTicket}.`);
+            return {
+                success: true,
+                message: `Ticket ${data.idTicket} guardado correctamente.`,
+            };
+        } catch (error) {
+            console.error(`❌ Error enviando correo para el número de ticket: #${data.idTicket}`, error.message);
             return {
                 success: false,
                 message: "Error al enviar el correo",
