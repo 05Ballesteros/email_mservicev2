@@ -878,5 +878,6 @@ export const cerrarMailOptions = (data: any) => {
 </html>
 
         `,
+        attachments: data.attachments,
     };
 };

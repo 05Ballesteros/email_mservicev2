@@ -149,7 +149,7 @@ export class EmailService {
                 details: parsed.details,
                 idTicket: parsed.idTicket,
                 destinatario: parsed.destinatario,
-                emails_extra: [],
+                emails_extra: parsed.emails_extra,
                 attachments: []
             };
 
@@ -166,13 +166,14 @@ export class EmailService {
                 }));
                 data.attachments = attachments
             }
-
-            await this.mailerService.sendMail(pendienteMailOptions(data));
-
-            return {
-                success: true,
-                message: "Correo enviado correctamente",
-            };
+            const correo = await this.mailerService.sendMail(pendienteMailOptions(data));
+            if (correo) {
+                console.log(`Contacto: ✅ Correo enviado para el número de ticket #${data.idTicket}. Cliente: ${data.destinatario}. Extras: ${data.emails_extra}`);
+                return {
+                    success: true,
+                    message: "Correo enviado correctamente",
+                };
+            }
         } catch (error) {
             console.error("Error al enviar correo:", error);
             return {
@@ -191,10 +192,10 @@ export class EmailService {
                 details: parsed.details,
                 idTicket: parsed.idTicket,
                 destinatario: parsed.destinatario,
-                emails_extra: [],
+                emails_extra: parsed.emails_extra,
                 attachments: []
             };
-
+            console.log(data);
             if (parsed.emails_extra && Array.isArray(parsed.emails_extra)) {
                 data.emails_extra = parsed.emails_extra;
             }
@@ -209,12 +210,14 @@ export class EmailService {
                 data.attachments = attachments
             }
 
-            await this.mailerService.sendMail(pendienteMailOptions(data));
-
-            return {
-                success: true,
-                message: "Correo enviado correctamente",
-            };
+            const correo = await this.mailerService.sendMail(contactoMailOptions(data));
+            if (correo) {
+                console.log(`Contacto: ✅ Correo enviado para el número de ticket #${data.idTicket}. Cliente: ${data.destinatario}. Extras: ${data.emails_extra}`);
+                return {
+                    success: true,
+                    message: "Correo enviado correctamente",
+                };
+            }
         } catch (error) {
             console.error("Error al enviar correo:", error);
             return {
@@ -232,6 +235,7 @@ export class EmailService {
             details: parsed.details,
             idTicket: parsed.idTicket,
             destinatario: parsed.destinatario,
+            attachments: []
         };
         try {
 

@@ -850,5 +850,6 @@ export const contactoMailOptions = (data: any) => {
 </html>
 
         `,
+    attachments: data.attachments,
   };
 };

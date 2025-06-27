@@ -5,6 +5,7 @@ import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { PendienteDto } from './dto/pendiente.dto';
 import { memoryStorage } from 'multer';
 import { CerrarDto } from './dto/cerrar.dto';
+import { ContactoDto } from './dto/Contacto.dto';
 @Controller('email')
 @UseGuards(JwtAuthGuard)
 export class EmailController {
@@ -22,7 +23,8 @@ export class EmailController {
     @UseInterceptors(AnyFilesInterceptor({
         storage: memoryStorage(),
     }))
-    async contactoCliente(@Body() dto: PendienteDto, @UploadedFiles() files: Express.Multer.File[]) {
+    async contactoCliente(@Body() dto: ContactoDto, @UploadedFiles() files: Express.Multer.File[]) {
+        console.log("DTO", dto);
         return this.emailService.contactoCliente(dto, files);
     }
 
