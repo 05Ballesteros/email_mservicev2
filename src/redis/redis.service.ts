@@ -65,11 +65,14 @@ export class RedisService implements OnModuleInit {
       case REDIS_CHANNELS.REABRIR:
         await this.handleReabrir(message);
         break;
-      case REDIS_CHANNELS.REGRESAR:
-        await this.handleRegresar(message);
+      case REDIS_CHANNELS.REGRESAR_MODERADOR:
+        await this.handleRegresarModerador(message);
         break;
       case REDIS_CHANNELS.REGRESAR_RESOLUTOR:
         await this.handleRegresarResolutor(message);
+        break;
+      case REDIS_CHANNELS.REGRESAR_MESA:
+        await this.handleRegresarMesa(message);
         break;
       default:
         console.warn(`No existe el canal: ${channel}`);
@@ -85,8 +88,9 @@ export class RedisService implements OnModuleInit {
   private async handleCrearUsuario(message: any) { await this.emailService.crearUsuarioEmail(message); }
   private async handleNota(message: any) { await this.emailService.notaEmail(message); }
   private async handleReabrir(message: any) { await this.emailService.reabrirEmail(message); }
-  private async handleRegresar(message: any) { await this.emailService.regresarEmail(message); }
+  private async handleRegresarModerador(message: any) { await this.emailService.regresarModeradorEmail(message); }
   private async handleRegresarResolutor(message: any) { await this.emailService.regresarEmailResolutor(message); }
+  private async handleRegresarMesa(message: any) { await this.emailService.regresarEmailMesa(message); }
 
   // Publicar mensajes en un canal
   publish(channel: string, message: any) {

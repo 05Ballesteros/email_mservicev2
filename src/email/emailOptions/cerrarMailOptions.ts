@@ -2,7 +2,7 @@ export const cerrarMailOptions = (data: any) => {
     return {
         from: `CENTRO DE SERVICIO <carlos.ballesteros@ipejal.gob.mx>`,
                 to: data.destinatario,
-                subject: `El ticket #${data.idTicket} fue cerrado.`,
+                subject: `El ticket #${data.Id} fue cerrado.`,
                 html: `
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html
@@ -494,7 +494,7 @@ export const cerrarMailOptions = (data: any) => {
                                       "
                                     >
                                       <strong
-                                        >El ticket #${data.idTicket} fue
+                                        >El ticket #${data.Id} fue
                                         cerrado</strong
                                       >
                                     </div>
@@ -614,7 +614,7 @@ export const cerrarMailOptions = (data: any) => {
                                         text-align: justify;
                                       "
                                     >
-                                    Nos complace informarte que hemos atendido tu solicitud, con el número de ticket #${data.idTicket}, dando por cerrado el incidente en nuestro sistema.
+                                    Nos complace informarte que hemos atendido tu solicitud, con el número de ticket #${data.Id}, dando por cerrado el incidente en nuestro sistema.
                                     </p>
                                     <p
                                       style="

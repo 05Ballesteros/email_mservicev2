@@ -1,7 +1,7 @@
-export const regresarModeradorMailOptions = (data: any) => {
+export const regresarMesaMailOptions = (data: any) => {
   return {
-    to: data.destinatario,
-    subject: `Devuelto - El ticket #${data.Id} fue devuelto a moderador.`,
+    to: "carlos.ballesteros@ipejal.gob.mx",
+    subject: `Devuelto - El ticket #${data.Id} fue devuelto a mesa.`,
     html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html
   dir="ltr"
@@ -612,7 +612,7 @@ export const regresarModeradorMailOptions = (data: any) => {
                                         text-align: justify;
                                       "
                                     >
-                                      Estimado miembro del equipo de resolución de incidentes de la
+                                      Estimado administrador de la Mesa de Servicio de la
                                       dirección de informática del Instituto de
                                       Pensiones del Estado de Jalisco (IPEJAL),
                                     </p>
@@ -629,7 +629,7 @@ export const regresarModeradorMailOptions = (data: any) => {
                                         text-align: justify;
                                       "
                                     >
-                                    Le informamos que el siguiente ticket <b>#${data.Id}</b> ha sido devuelto a usted, con la descripción proporcionada por el usuario:
+                                    Le informamos que el siguiente ticket <b>#${data.Id}</b> ha sido devuelto a Mesa de servicio con la descripción proporcionada por el usuario:
                                     </p>
                                     <p
                                       style="

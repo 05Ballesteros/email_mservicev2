@@ -9,28 +9,34 @@ import { crearticketMailOptions } from './emailOptions/crearticketMailOptions';
 import { crearUsuarioMailOptions } from './emailOptions/crearUsuarioMailOptions';
 import { notaMailOptions } from './emailOptions/notaMailOptions';
 import { reasignarMailOptionsClients, reasignarMailOptionsUser } from './emailOptions/reabrirMailOptions';
-import { regresarMailOptions } from './emailOptions/regrsarMailOptions';
+import { regresarModeradorMailOptions } from './emailOptions/regrsarMailOptions';
 import { PendienteDto } from './dto/pendiente.dto';
 import { pendienteMailOptions } from './emailOptions/pendienteMailOptions';
 import { Attachment } from 'nodemailer/lib/mailer';
 interface EmailData {
     details: string;
-    idTicket: string;
+    Id: string;
     destinatario: string;
     emails_extra?: string[];
     attachments?: Attachment[];
 }
 
 import { regresarResolutorMailOptions } from './emailOptions/regrsarResolutorMailOptions';
+import { Correo } from 'src/schemas/correo.schema';
+import { regresarMesaMailOptions } from './emailOptions/regrsarMailaMesaOptions';
 @Injectable()
 export class EmailService {
-    constructor(private readonly mailerService: MailerService) { }
+    constructor(
+        private readonly mailerService: MailerService,
+    ) { }
     async asignarEmail(message: any) {
+        const exito = `✅ Ticket ${message.Id} asignado: correo enviado al usuario ${message.destinatario}`;
+        const fallo = `❌ Falló la asignación ticket ${message.Id} : ✅ error enviado correo al usuario ${message.destinatario}`
         try {
-            await this.mailerService.sendMail(asignarMailOptions(message));
-            console.log(`Asignar: ✅ correo enviado a ${message.correoUsuario}`);
+            const enviado = await this.mailerService.sendMail(asignarMailOptions(message));
+            if (enviado) { console.log(exito); } //Else guardar el mensaje en la colleccion de correos
         } catch (error) {
-            console.error('❌ Error al enviar el correo:', error.message);
+            console.error(fallo, error.message);
             throw error;
         }
     }
@@ -38,7 +44,7 @@ export class EmailService {
     async reasignarEmail(message: any) {
         try {
             await this.mailerService.sendMail(reasignarMailOptions(message));
-            console.log(`Reasignar: ✅ correo enviado a ${message.correoUsuario}`);
+            console.log(`Reasignar: ✅ correo enviado a ${message.destinatario}`);
         } catch (error) {
             console.error('❌ Error al enviar el correo:', error.message);
             throw error;
@@ -48,7 +54,7 @@ export class EmailService {
     async cerrarEmail(message: any) {
         try {
             await this.mailerService.sendMail(cerrarMailOptions(message));
-            console.log(`Cerrar: ✅ correo enviado a ${message.correoUsuario}`);
+            console.log(`Cerrar: ✅ correo enviado a ${message.destinatario}`);
         } catch (error) {
             console.error('❌ Error al enviar el correo:', error.message);
             throw error;
@@ -59,7 +65,7 @@ export class EmailService {
         try {
 
             await this.mailerService.sendMail(contactoMailOptions(message));
-            console.log(`Contacto cliente: ✅ correo enviado a ${message.correoCliente}`);
+            console.log(`Contacto cliente: ✅ correo enviado a ${message.destinatario}`);
         } catch (error) {
             console.error('❌ Error al enviar el correo:', error.message);
             throw error;
@@ -69,10 +75,21 @@ export class EmailService {
     async crearEmail(message: any) {
         try {
             await this.mailerService.sendMail(crearticketMailOptions(message));
-            console.log(`Creación de ticket: ✅ correo enviado a ${message.correoCliente}`);
-            if (message.Asignado_a !== "") {
-                await this.mailerService.sendMail(asignarMailOptions(message));
-                console.log(`Asignación de ticket: ✅ correo enviado a ${message.correoUsuario}`);
+            console.log(`Creación de ticket ${message.Id}: ✅ correo enviado a ${message.destinatario}`);
+            if (message.emails_extra !== "standby@standby.com" && message.emails_extra.length > 0) {
+                let mssg = {
+                    destinatario: message.emails_extra,
+                    Id: message.Id,
+                    details: message.details,
+                    nombre: message.nombre,
+                    telefono: message.telefono,
+                    extension: message.extension,
+                    ubicacion: message.ubicacion,
+                    area: message.area,
+                }
+                console.log("Asignaciòn", mssg);
+                await this.mailerService.sendMail(asignarMailOptions(mssg));
+                console.log(`Asignación de ticket ${message.Id}: ✅ correo enviado a ${mssg.destinatario}`);
             }
             return true;
         } catch (error) {
@@ -82,11 +99,13 @@ export class EmailService {
     }
 
     async crearUsuarioEmail(message: any) {
+        const exito = `✅ Usuario ${message.username} creado: correo enviado al usuario ${message.destinatario}`;
+        const fallo = `❌ Falló el envió de credenciales del usuario ${message.username}: error enviado correo al usuario ${message.destinatario}`
         try {
-            await this.mailerService.sendMail(crearUsuarioMailOptions(message));
-            console.log(`Creación de usuario: ✅ Correo enviado para el Usuario#${message.username}.`);
+            const envio = await this.mailerService.sendMail(crearUsuarioMailOptions(message));
+            if (envio) { console.log(exito); }
         } catch (error) {
-            console.error('❌ Error al enviar el correo:', error.message);
+            console.error(fallo, error.message);
             throw error;
         }
     }
@@ -94,9 +113,9 @@ export class EmailService {
     async notaEmail(message: any) {
         try {
             await this.mailerService.sendMail(notaMailOptions(message));
-            console.log(`Nota: ✅ Correo enviado para la nota en ticket #${message.idTicket}.`);
+            console.log(`Nota: ✅ Correo enviado para la nota en ticket #${message.Id}.`);
         } catch (error) {
-            console.error(`❌ Error enviando correo con nota para el número de ticket #${message.idTicket}:`, error.message);
+            console.error(`❌ Error enviando correo con nota para el número de ticket #${message.Id}:`, error.message);
             throw error;
         }
     }
@@ -112,21 +131,23 @@ export class EmailService {
                     throw new Error(`Error al enviar correo`);
                 }
             };
-            await enviarCorreo(reasignarMailOptionsClients(message), `Cliente (ticket #${message.idTicket})`);
-            await enviarCorreo(reasignarMailOptionsUser(message), `Resolutor (ticket #${message.idTicket})`);
+            await enviarCorreo(reasignarMailOptionsClients(message), `Cliente (ticket #${message.Id})`);
+            await enviarCorreo(reasignarMailOptionsUser(message), `Resolutor (ticket #${message.Id})`);
 
         } catch (error) {
-            console.error(`❌ Error enviando correo con nota para el número de ticket #${message.idTicket}:`, error.message);
+            console.error(`❌ Error enviando correo con nota para el número de ticket #${message.Id}:`, error.message);
             throw error;
         }
     }
 
-    async regresarEmail(message: any) {
+    async regresarModeradorEmail(message: any) {
+        const exito = `✅ Ticket #${message.Id} devuelto a Moderador: Correo enviado.`;
+        const fallo = `❌ Falló la devolución del ticket ${message.Id} : error enviado correo a Moderador.`
         try {
-            await this.mailerService.sendMail(regresarMailOptions(message));
-            console.log(`Regresar: ✅ Correo enviado para el número de ticket #${message.idTicket}.`);
+            const envio = await this.mailerService.sendMail(regresarModeradorMailOptions(message));
+            if (envio) { console.log(exito); }
         } catch (error) {
-            console.error(`❌ Error enviando correo para el número de ticket #${message.idTicket}:`, error.message);
+            console.error(fallo, error.message);
             throw error;
         }
     }
@@ -134,22 +155,33 @@ export class EmailService {
     async regresarEmailResolutor(message: any) {
         try {
             await this.mailerService.sendMail(regresarResolutorMailOptions(message));
-            console.log(`Regresar ticket a resolutor: ✅ Correo enviado para el número de ticket #${message.idTicket}.`);
+            console.log(`Regresar ticket a resolutor: ✅ Correo enviado para el número de ticket #${message.Id}.`);
         } catch (error) {
-            console.error(`❌ Error enviando correo para el número de ticket #${message.idTicket}:`, error.message);
+            console.error(`❌ Error enviando correo para el número de ticket #${message.Id}:`, error.message);
             throw error;
         }
     }
 
+    async regresarEmailMesa(message: any) {
+        const exito = `✅ Ticket #${message.Id}devuelto a Mesa: Correo enviado a Mesa. `;
+        const fallo = `❌ Falló la devolución del ticket ${message.Id} : error enviado correo a Mesa.`
+        try {
+            const envio = await this.mailerService.sendMail(regresarMesaMailOptions(message));
+            if (envio) { console.log(exito); }
+        } catch (error) {
+            console.error(fallo, error.message);
+            throw error;
+        }
+    }
     async marcarPendiente(dto: any, files: Express.Multer.File[]) {
         try {
             const parsed = JSON.parse(dto.correoData);
 
             const data: EmailData = {
-                details: parsed.details,
-                idTicket: parsed.idTicket,
+                Id: parsed.idTicket,
                 destinatario: parsed.destinatario,
                 emails_extra: parsed.emails_extra,
+                details: parsed.details,
                 attachments: []
             };
 
@@ -168,7 +200,7 @@ export class EmailService {
             }
             const correo = await this.mailerService.sendMail(pendienteMailOptions(data));
             if (correo) {
-                console.log(`Contacto: ✅ Correo enviado para el número de ticket #${data.idTicket}. Cliente: ${data.destinatario}. Extras: ${data.emails_extra}`);
+                console.log(`Contacto: ✅ Correo enviado para el número de ticket #${data.Id}. Cliente: ${data.destinatario}. Extras: ${data.emails_extra}`);
                 return {
                     success: true,
                     message: "Correo enviado correctamente",
@@ -190,7 +222,7 @@ export class EmailService {
 
             const data: EmailData = {
                 details: parsed.details,
-                idTicket: parsed.idTicket,
+                Id: parsed.idTicket,
                 destinatario: parsed.destinatario,
                 emails_extra: parsed.emails_extra,
                 attachments: []
@@ -212,7 +244,7 @@ export class EmailService {
 
             const correo = await this.mailerService.sendMail(contactoMailOptions(data));
             if (correo) {
-                console.log(`Contacto: ✅ Correo enviado para el número de ticket #${data.idTicket}. Cliente: ${data.destinatario}. Extras: ${data.emails_extra}`);
+                console.log(`Contacto: ✅ Correo enviado para el número de ticket #${data.Id}. Cliente: ${data.destinatario}. Extras: ${data.emails_extra}`);
                 return {
                     success: true,
                     message: "Correo enviado correctamente",
@@ -233,7 +265,7 @@ export class EmailService {
 
         const data: EmailData = {
             details: parsed.details,
-            idTicket: parsed.idTicket,
+            Id: parsed.idTicket,
             destinatario: parsed.destinatario,
             attachments: []
         };
@@ -254,13 +286,13 @@ export class EmailService {
             }
             await this.mailerService.sendMail(cerrarMailOptions(data));
 
-            console.log(`Cerrar: ✅ Correo enviado para el número de ticket #${data.idTicket}.`);
+            console.log(`Cerrar: ✅ Correo enviado para el número de ticket #${data.Id}.`);
             return {
                 success: true,
-                message: `Ticket ${data.idTicket} guardado correctamente.`,
+                message: `Ticket ${data.Id} guardado correctamente.`,
             };
         } catch (error) {
-            console.error(`❌ Error enviando correo para el número de ticket: #${data.idTicket}`, error.message);
+            console.error(`❌ Error enviando correo para el número de ticket: #${data.Id}`, error.message);
             return {
                 success: false,
                 message: "Error al enviar el correo",

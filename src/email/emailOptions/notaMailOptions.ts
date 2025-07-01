@@ -1,19 +1,9 @@
 export const notaMailOptions = (data: any) => {
-  const destinatarios = [
-    data.Destinatario1,
-    data.Destinatario2,
-    data.Destinatario3,
-  ]
-    .filter((destinatario) => destinatario && destinatario.trim() !== "") // Filtrar valores no vacíos
-    .join(","); // Unir en una cadena separada por comas
-
-  if (!destinatarios) {
-    throw new Error("No hay destinatarios válidos para enviar el correo.");
-  }
   return {
     from: `CENTRO DE SERVICIO <carlos.ballesteros@ipejal.gob.mx>`,
-    to: destinatarios,
-    subject: `NOTA - Tienes una nota en el número de ticket #${data.idTicket}`,
+    to: data.destinatario,
+    cc: data.emails_extra,
+    subject: `NOTA - Tienes una nota en el número de ticket #${data.Id}`,
     html: `
           <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html
@@ -505,7 +495,7 @@ export const notaMailOptions = (data: any) => {
                                       "
                                     >
                                       <strong
-                                        >Tienes una nota en el número de ticket #${data.idTicket}</strong
+                                        >Tienes una nota en el número de ticket #${data.Id}</strong
                                       >
                                     </div>
                                   </td>
@@ -657,7 +647,7 @@ export const notaMailOptions = (data: any) => {
                                       "
                                     >
                                       <strong>Nota:</strong>
-                                      ${data.Nota}
+                                      ${data.details}
                                     </p>
                                     <br />
                                     <p

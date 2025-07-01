@@ -1,7 +1,7 @@
 export const crearUsuarioMailOptions = (data: any) => {
   return {
     from: `CENTRO DE SERVICIO <carlos.ballesteros@ipejal.gob.mx>`,
-    to: data.correoDestinatario,
+    to: data.destinatario,
     subject: `El usuario ${data.username} fue creado.`,
     html: `
           <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -614,7 +614,7 @@ export const crearUsuarioMailOptions = (data: any) => {
                                         text-align: justify;
                                       "
                                     >
-                                    Estimad@ ${data.nombreUsuario}, nos complace informarle que hemos creado su usuario y contraseña para el uso del sistema <b>Chermina</b>.
+                                    Estimad@ ${data.nombre}, nos complace informarle que hemos creado su usuario y contraseña para el uso del sistema <b>Chermina</b>.
                                     </p>
                                     
                                     <p

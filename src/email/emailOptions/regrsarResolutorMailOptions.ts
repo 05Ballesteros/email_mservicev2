@@ -1,8 +1,8 @@
 export const regresarResolutorMailOptions = (data: any) => {
   return {
     from: `CENTRO DE SERVICIO <carlos.ballesteros@ipejal.gob.mx>`,
-    to: data.correoResolutor,
-    subject: `Devuelto - El ticket #${data.idTicket} fue devuelto al resolutor.`,
+    to: data.destinatario,
+    subject: `Devuelto - El ticket #${data.Id} fue devuelto al resolutor.`,
     html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html
   dir="ltr"
@@ -494,7 +494,7 @@ export const regresarResolutorMailOptions = (data: any) => {
                                     >
                                       <strong
                                         >Seguimiento al número de ticket
-                                        ${data.idTicket}</strong
+                                        ${data.Id}</strong
                                       >
                                     </div>
                                   </td>
@@ -631,7 +631,7 @@ export const regresarResolutorMailOptions = (data: any) => {
                                         text-align: justify;
                                       "
                                     >
-                                    Se a respondido a tu petición de información correspondiente al ticket <b>#${data.idTicket}.</b>
+                                    Se a respondido a tu petición de información correspondiente al ticket <b>#${data.Id}.</b>
                                     </p>
                                     <p
                                       style="
@@ -662,7 +662,7 @@ export const regresarResolutorMailOptions = (data: any) => {
                                         margin-left: 40px;
                                       "
                                     >
-                                      &nbsp;<em>"${data.Descripcion_respuesta_cliente}"</em>
+                                      &nbsp;<em>"${data.details}"</em>
                                     </p>
                                     <p
                                       style="

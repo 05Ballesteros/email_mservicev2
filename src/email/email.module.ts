@@ -7,12 +7,12 @@ import { EmailController } from './email.controller';
   imports: [
     MailerModule.forRoot({
       transport: {
-        host: 'smtp.office365.com', // Host para Outlook
-        port: 587,                 // Puerto SMTP para STARTTLS
-        secure: false,             // false para STARTTLS
+        host: 'smtp.gmail.com', // Host SMTP de Gmail
+        port: 587,              // Puerto SMTP (587 para STARTTLS)
+        secure: false,          // false para STARTTLS (true solo si usas puerto 465)
         auth: {
-          user: 'carlos.ballesteros@ipejal.gob.mx', // Tu correo de Outlook
-          pass: 'Yeanbases1807',         // Contraseña de tu cuenta o contraseña de aplicación
+          user: 'carlos.ballesteros@ipejal.gob.mx',       // Tu correo de Gmail
+          pass: 'udls uiyz rrit khiv', // Contraseña o contraseña de aplicación
         },
       },
     }),

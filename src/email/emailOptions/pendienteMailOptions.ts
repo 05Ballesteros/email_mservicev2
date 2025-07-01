@@ -4,7 +4,7 @@ export const pendienteMailOptions = (data: any) => {
     from: `CENTRO DE SERVICIO <carlos.ballesteros@ipejal.gob.mx>`,
     to: data.destinatario,
     cc: data.emails_extra,
-    subject: `PENDIENTE - El ticket #${data.idTicket} fue marcado como pendiente.`,
+    subject: `PENDIENTE - El ticket #${data.Id} fue marcado como pendiente.`,
     attachments: data.attachments,
     html: `
           
@@ -498,7 +498,7 @@ export const pendienteMailOptions = (data: any) => {
                                       "
                                     >
                                       <strong
-                                        >Seguimiento al ticket #${data.idTicket}</strong
+                                        >Seguimiento al ticket #${data.Id}</strong
                                       >
                                     </div>
                                   </td>

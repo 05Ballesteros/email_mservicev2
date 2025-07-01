@@ -3,7 +3,7 @@ export const contactoMailOptions = (data: any) => {
     from: `CENTRO DE SERVICIO <carlos.ballesteros@ipejal.gob.mx>`,
     to: data.destinatario,
     cc: data.emails_extra,
-    subject: `Seguimiento al número de ticket #${data.idTicket}.`,
+    subject: `Seguimiento al número de ticket #${data.Id}.`,
     html: `
           
           <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -496,7 +496,7 @@ export const contactoMailOptions = (data: any) => {
                                       "
                                     >
                                       <strong
-                                        >Seguimiento al ticket #${data.idTicket}</strong
+                                        >Seguimiento al ticket #${data.Id}</strong
                                       >
                                     </div>
                                   </td>

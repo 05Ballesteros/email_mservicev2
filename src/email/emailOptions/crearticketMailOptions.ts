@@ -1,9 +1,8 @@
 export const crearticketMailOptions = (data: any) => {
-  console.log("data", data);
   return {
     from: `CENTRO DE SERVICIO <carlos.ballesteros@ipejal.gob.mx>`,
-    to: data.correoCliente,
-    subject: `El ticket #${data.idTicket} fue creado.`,
+    to: data.destinatario,
+    subject: `El ticket #${data.Id} fue creado.`,
     html: `
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html
@@ -495,7 +494,7 @@ export const crearticketMailOptions = (data: any) => {
                                       "
                                     >
                                       <strong
-                                        >El ticket #${data.idTicket} fue
+                                        >El ticket #${data.Id} fue
                                         creado</strong
                                       >
                                     </div>
@@ -630,7 +629,7 @@ export const crearticketMailOptions = (data: any) => {
                                         text-align: justify;
                                       "
                                     >
-                                    Tu solicitud ha sido dada de alta en nuestro sistema, con el número de ticket <b>#${data.idTicket}</b> te sugerimos guardarlo, ya que te será útil para futuras consultas.
+                                    Tu solicitud ha sido dada de alta en nuestro sistema, con el número de ticket <b>#${data.Id}</b> te sugerimos guardarlo, ya que te será útil para futuras consultas.
                                     </p>
                                     <p
                                       style="
@@ -676,7 +675,7 @@ export const crearticketMailOptions = (data: any) => {
                                         margin-left: 40px;
                                       "
                                     >
-                                      &nbsp;<em>"${data.descripcionTicket}"</em>
+                                      &nbsp;<em>"${data.details}"</em>
                                     </p>
                                     <p
                                       style="

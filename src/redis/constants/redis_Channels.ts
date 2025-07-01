@@ -7,6 +7,7 @@ export const REDIS_CHANNELS = {
   CREAR_USUARIO: 'channel_crearUsuario',
   NOTA: 'channel_notas',
   REABRIR: 'channel_reabrirTicket',
-  REGRESAR: 'channel_regresarTicket',
+  REGRESAR_MODERADOR: 'channel_regresarTicketModerador',
   REGRESAR_RESOLUTOR: 'channel_regresarTicketResolutor',
+  REGRESAR_MESA: 'channel_regresarTicketMesa',
 };
