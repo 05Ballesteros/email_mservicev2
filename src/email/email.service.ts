@@ -178,7 +178,7 @@ export class EmailService {
             const parsed = JSON.parse(dto.correoData);
 
             const data: EmailData = {
-                Id: parsed.idTicket,
+                Id: parsed.Id,
                 destinatario: parsed.destinatario,
                 emails_extra: parsed.emails_extra,
                 details: parsed.details,
@@ -222,7 +222,7 @@ export class EmailService {
 
             const data: EmailData = {
                 details: parsed.details,
-                Id: parsed.idTicket,
+                Id: parsed.Id,
                 destinatario: parsed.destinatario,
                 emails_extra: parsed.emails_extra,
                 attachments: []
@@ -265,7 +265,7 @@ export class EmailService {
 
         const data: EmailData = {
             details: parsed.details,
-            Id: parsed.idTicket,
+            Id: parsed.Id,
             destinatario: parsed.destinatario,
             attachments: []
         };

@@ -28,7 +28,7 @@ export class PendienteDto {
     details: string;
 
     @IsString()
-    idTicket: string;
+    Id: string;
 
     @IsString()
     destinatario: string;

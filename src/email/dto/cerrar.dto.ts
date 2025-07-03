@@ -28,7 +28,7 @@ export class CerrarDto {
     Nota: string;
 
     @IsString()
-    idTicket: string;
+    Id: number;
 
     @IsString()
     destinatario: string;
