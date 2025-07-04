@@ -24,6 +24,7 @@ interface EmailData {
 import { regresarResolutorMailOptions } from './emailOptions/regrsarResolutorMailOptions';
 import { Correo } from 'src/schemas/correo.schema';
 import { regresarMesaMailOptions } from './emailOptions/regrsarMailaMesaOptions';
+import { pendienteMesaMailOptions } from './emailOptions/pendienteMesaMailOptions';
 @Injectable()
 export class EmailService {
     constructor(
@@ -198,8 +199,9 @@ export class EmailService {
                 }));
                 data.attachments = attachments
             }
-            const correo = await this.mailerService.sendMail(pendienteMailOptions(data));
-            if (correo) {
+            const correoCliente = await this.mailerService.sendMail(pendienteMailOptions(data));
+            const correoMesa = await this.mailerService.sendMail(pendienteMesaMailOptions(data));
+            if (correoCliente && correoMesa) {
                 console.log(`Contacto: ✅ Correo enviado para el número de ticket #${data.Id}. Cliente: ${data.destinatario}. Extras: ${data.emails_extra}`);
                 return {
                     success: true,

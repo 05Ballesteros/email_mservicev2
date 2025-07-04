@@ -1,13 +1,8 @@
-export const pendienteMailOptions = (data: any) => {
-  console.log("este es el data dentro del correo", data)
+export const pendienteMesaMailOptions = (data: any) => {
   return {
-    from: `CENTRO DE SERVICIO <carlos.ballesteros@ipejal.gob.mx>`,
-    to: data.emails_extra,
-    subject: `PENDIENTE - El ticket #${data.Id} fue marcado como pendiente.`,
-    attachments: data.attachments,
-    html: `
-          
-          <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    to: data.destinatario,
+    subject: `Devuelto - El ticket #${data.Id} fue marcado como pendiente.`,
+    html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html
   dir="ltr"
   xmlns="http://www.w3.org/1999/xhtml"
@@ -497,7 +492,8 @@ export const pendienteMailOptions = (data: any) => {
                                       "
                                     >
                                       <strong
-                                        >Seguimiento al ticket #${data.Id}</strong
+                                        >Seguimiento al número de ticket
+                                        ${data.Id}</strong
                                       >
                                     </div>
                                   </td>
@@ -616,7 +612,24 @@ export const pendienteMailOptions = (data: any) => {
                                         text-align: justify;
                                       "
                                     >
-                                    Uno de nuestros especialistas de la mesa de servicio se ha puesto en contacto contigo y menciona lo siguiente:
+                                      Estimado administrador de la Mesa de Servicio de la
+                                      dirección de informática del Instituto de
+                                      Pensiones del Estado de Jalisco (IPEJAL),
+                                    </p>
+                                    <p
+                                      style="
+                                        margin: 0;
+                                        mso-line-height-rule: exactly;
+                                        font-family: arial, 'helvetica neue',
+                                          helvetica, sans-serif;
+                                        line-height: 21px;
+                                        letter-spacing: 0;
+                                        color: #333333;
+                                        font-size: 14px;
+                                        text-align: justify;
+                                      "
+                                    >
+                                    Le informamos que el siguiente ticket <b>#${data.Id}</b> ha sido marcado como pendiente y se encuentra en Mesa de servicio con la descripción proporcionada por el usuario:
                                     </p>
                                     <p
                                       style="
@@ -665,7 +678,6 @@ export const pendienteMailOptions = (data: any) => {
                                     >
                                       <em><br /></em>
                                     </p>
-
                                     <p
                                       style="
                                         margin: 0;
@@ -677,12 +689,10 @@ export const pendienteMailOptions = (data: any) => {
                                         color: #333333;
                                         font-size: 14px;
                                         text-align: justify;
-                                        margin-left: 40px;
                                       "
                                     >
-                                      <br />
+                                      Por favor, revise la información y tome las acciones correspondientes.
                                     </p>
-                                    
                                     <p
                                       style="
                                         margin: 0;
@@ -850,6 +860,6 @@ export const pendienteMailOptions = (data: any) => {
   </body>
 </html>
 
-        `,
+    `,
   };
 };
